@@ -9,7 +9,7 @@ import retrofit2.http.GET
 private const val BASE_URL = Constants.BASE_URL
 
 interface AsteroidApiService {
-    @GET("neo/rest/v1/feed")
+    @GET("planetary/apod?api_key=9pwfew1lLu5pL3pCq7LXMia4IJ8kMZ5u66vbP4sA")
     fun getProperties(
 
 //        @Query("start_date") startDate: String,
