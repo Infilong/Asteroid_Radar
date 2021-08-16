@@ -71,7 +71,7 @@
             android:id="@+id/handshake"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@{viewModel.response}"
+            android:text="@{viewModel.status}"
             android:textColor="#0CEC9D"
             app:layout_constraintBottom_toBottomOf="@+id/asteroid_recycler"
             app:layout_constraintEnd_toEndOf="parent"
