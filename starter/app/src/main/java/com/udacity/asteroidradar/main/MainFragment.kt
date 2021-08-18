@@ -4,22 +4,30 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
 
 class MainFragment : Fragment() {
 
+    private lateinit var binding: FragmentMainBinding
     private val viewModel: MainViewModel by lazy {
         ViewModelProvider(this).get(MainViewModel::class.java)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        val binding = FragmentMainBinding.inflate(inflater)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View {
+        binding = FragmentMainBinding.inflate(inflater)
         binding.lifecycleOwner = this
 
         binding.viewModel = viewModel
 
+        val adapter = AsteroidInfoAdapter(AsteroidInfoAdapter.AsteroidListener { asteroid ->
+            viewModel.onAsteroidClicked(asteroid)
+        })
+        setRecyclerViewAdapter()
         setHasOptionsMenu(true)
 
         return binding.root
@@ -32,5 +40,29 @@ class MainFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return true
+    }
+
+    private fun setRecyclerViewAdapter() {
+        val adapter = AsteroidInfoAdapter(AsteroidInfoAdapter.AsteroidListener { asteroid ->
+            viewModel.onAsteroidClicked(asteroid)
+        })
+        binding.asteroidRecycler.adapter = adapter
+
+        adapter.submitList(recyclerViewTestList())
+    }
+
+    private fun recyclerViewTestList(): MutableList<Asteroid> {
+        val asteroidList = mutableListOf<Asteroid>()
+        asteroidList.add(
+            Asteroid(
+                1, "12345 (20015 KB66", "2029-08-18",
+                3.0, 9.0, 0.0, 6.0, true
+            ))
+        asteroidList.add(
+            Asteroid(
+                1, "67890 (205699 KB67", "2020-08-19",
+                666.0, 6.0, 77.0, 48.0, true
+            ))
+        return asteroidList
     }
 }

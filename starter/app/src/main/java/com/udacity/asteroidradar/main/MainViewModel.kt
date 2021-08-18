@@ -21,6 +21,9 @@ class MainViewModel : ViewModel() {
         getAsteroidProperties()
     }
 
+    fun onAsteroidClicked(asteroid: Asteroid) {
+        _asteroidProperties.value = asteroid
+    }
 
     private fun getAsteroidProperties() {
 //        AsteroidApi.retrofitService.getProperties().enqueue(object : Callback<String> {
