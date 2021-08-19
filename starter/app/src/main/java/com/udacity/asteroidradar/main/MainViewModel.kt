@@ -13,8 +13,8 @@ class MainViewModel : ViewModel() {
     val status: LiveData<String>
         get() = _status
 
-    private val _asteroidProperties = MutableLiveData<Asteroid>()
-    val asteroidProperties: LiveData<Asteroid>
+    private val _asteroidProperties = MutableLiveData<Asteroid?>()
+    val asteroidProperties: MutableLiveData<Asteroid?>
         get() = _asteroidProperties
 
     init {
@@ -23,6 +23,10 @@ class MainViewModel : ViewModel() {
 
     fun onAsteroidClicked(asteroid: Asteroid) {
         _asteroidProperties.value = asteroid
+    }
+
+    fun navigationReset(){
+        _asteroidProperties.value = null
     }
 
     private fun getAsteroidProperties() {
