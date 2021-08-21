@@ -25,7 +25,7 @@ class MainViewModel : ViewModel() {
         _asteroidProperties.value = asteroid
     }
 
-    fun navigationReset(){
+    fun navigationReset() {
         _asteroidProperties.value = null
     }
 
@@ -44,8 +44,10 @@ class MainViewModel : ViewModel() {
 //        })
         viewModelScope.launch {
             try {
-                var listResult = AsteroidApi.retrofitService.getProperties()
-                _status.value = "Success: ${listResult.size} Mars properties retrieved"
+                var listResult = AsteroidApi.retrofitService.getAsteroids("2021-01-01",
+                    "2021-01-02",
+                    "=9pwfew1lLu5pL3pCq7LXMia4IJ8kMZ5u66vbP4sA")
+                _status.value = "Success: $listResult Mars properties retrieved"
             } catch (e: Exception) {
                 _status.value = "Failure: ${e.message}"
             }
