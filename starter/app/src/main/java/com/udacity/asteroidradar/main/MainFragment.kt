@@ -24,7 +24,7 @@ class MainFragment : Fragment() {
         binding.viewModel = viewModel
 
         setRecyclerViewAdapter()
-        setHasOptionsMenu(true)
+        //setHasOptionsMenu(true)
         navigateToDetail()
 
         return binding.root
@@ -45,7 +45,10 @@ class MainFragment : Fragment() {
         })
         binding.asteroidRecycler.adapter = adapter
 
-        adapter.submitList(viewModel.asteroids)
+        viewModel.asteroids.observe(viewLifecycleOwner) { asteroidList ->
+            if (asteroidList != null)
+                adapter.submitList(asteroidList)
+        }
     }
 
     private fun navigateToDetail() {
@@ -56,20 +59,5 @@ class MainFragment : Fragment() {
             }
         })
     }
-
-//    private fun recyclerViewTestList(): MutableList<Asteroid> {
-//        val asteroidList = mutableListOf<Asteroid>()
-//        asteroidList.add(
-//            Asteroid(
-//                1, "12345 (20015 KB66", "2029-08-18",
-//                3.0, 9.0, 0.0, 6.0, true
-//            ))
-//        asteroidList.add(
-//            Asteroid(
-//                1, "67890 (205699 KB67", "2020-08-19",
-//                666.0, 6.0, 77.0, 48.0, true
-//            ))
-//        return asteroidList
-//    }
 }
 

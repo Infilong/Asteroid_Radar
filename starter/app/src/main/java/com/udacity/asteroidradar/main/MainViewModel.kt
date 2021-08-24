@@ -20,8 +20,8 @@ class MainViewModel : ViewModel() {
     val status: LiveData<String>
         get() = _status
 
-    private val _asteroids = MutableLiveData<Asteroid?>()
-    val asteroids: MutableLiveData<Asteroid?>
+    private val _asteroids = MutableLiveData<List<Asteroid>?>()
+    val asteroids: MutableLiveData<List<Asteroid>?>
         get() = _asteroids
 
     private val _navigateToDetailFragment = MutableLiveData<Asteroid?>()
@@ -34,6 +34,10 @@ class MainViewModel : ViewModel() {
 
     fun navigationReset() {
         _navigateToDetailFragment.value = null
+    }
+
+    init {
+        initAsteroids()
     }
 
     private fun initAsteroids() {
@@ -51,33 +55,7 @@ class MainViewModel : ViewModel() {
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 _asteroids.value = null
             }
-
         })
     }
-
-//    private fun getAsteroidProperties() {
-////        AsteroidApi.retrofitService.getProperties().enqueue(object : Callback<String> {
-////            override fun onFailure(call: Call<String>, t: Throwable) {
-////                _status.value = "Failure " + t.message
-////            }
-////
-////            override fun onResponse(
-////                call: Call<String>,
-////                response: Response<String>,
-////            ) {
-////                _status.value = "Success: ${response.body()} Asteroid properties retrieved"
-////            }
-////        })
-//        viewModelScope.launch {
-//            try {
-//                var listResult = AsteroidApi.retrofitService.getAsteroids("2021-01-01",
-//                    "2021-01-02",
-//                    Constants.API_KEY)
-//                _status.value = "Success: $listResult Mars properties retrieved"
-//            } catch (e: Exception) {
-//                _status.value = "Failure: ${e.message}"
-//            }
-//        }
-//    }
 }
 
