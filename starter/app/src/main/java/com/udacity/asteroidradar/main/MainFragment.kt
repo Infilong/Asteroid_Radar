@@ -24,7 +24,7 @@ class MainFragment : Fragment() {
         binding.viewModel = viewModel
 
         setRecyclerViewAdapter()
-        //setHasOptionsMenu(true)
+        setHasOptionsMenu(true)
         navigateToDetail()
 
         return binding.root
