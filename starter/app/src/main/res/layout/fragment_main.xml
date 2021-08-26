@@ -29,7 +29,8 @@
                 android:layout_height="match_parent"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
-                app:srcCompat="@drawable/placeholder_picture_of_day" />
+                app:srcCompat="@drawable/placeholder_picture_of_day"
+                app:imageUrl="@{viewModel.pictureOfTheDay.url}"/>
 
             <TextView
                 android:id="@+id/textView"
@@ -72,7 +73,7 @@
             android:id="@+id/handshake"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@{viewModel.status}"
+            android:text="@{viewModel.statusPictureOfTheDay}"
             android:textColor="#0CEC9D"
             app:layout_constraintBottom_toBottomOf="@+id/asteroid_recycler"
             app:layout_constraintEnd_toEndOf="parent"
