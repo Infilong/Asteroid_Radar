@@ -16,6 +16,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     private val asteroidsRepository = AsteroidsRepository(database)
     private val pictureOfTheDayRepository = PictureOfTheDayRepository(database)
 
+
     private val _navigateToDetailFragment = MutableLiveData<Asteroid?>()
     val navigateToDetailFragment: LiveData<Asteroid?>
         get() = _navigateToDetailFragment
