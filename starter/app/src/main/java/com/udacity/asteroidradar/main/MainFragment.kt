@@ -45,10 +45,7 @@ class MainFragment : Fragment() {
         })
         binding.asteroidRecycler.adapter = adapter
 
-        viewModel.asteroids.observe(viewLifecycleOwner) { asteroidList ->
-            if (asteroidList != null)
-                adapter.submitList(asteroidList)
-        }
+
     }
 
     private fun navigateToDetail() {
