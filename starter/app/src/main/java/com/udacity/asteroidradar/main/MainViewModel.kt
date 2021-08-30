@@ -39,6 +39,9 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             }
         }
     }
+
+    val asteriodList = asteroidsRepository.asteroids
+    val pictureOfTheDay = pictureOfTheDayRepository.pictureOfTheDay
 }
 
 

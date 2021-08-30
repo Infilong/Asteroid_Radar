@@ -28,19 +28,21 @@ interface PictureOfTheDayDatabaseDao {
     suspend fun insertPicture(pictureOfTheDay: PictureOfTheDayEntity)
 }
 
-@Database(entities = [AsteroidEntity::class, PictureOfTheDayEntity::class], version = 1)
+@Database(entities = [AsteroidEntity::class, PictureOfTheDayEntity::class],
+    version = 1,
+    exportSchema = false)
 abstract class AsteroidsDatabase : RoomDatabase() {
     abstract val asteroidsDatabaseDao: AsteroidDatabaseDao
     abstract val pictureOfTheDayDatabaseDao: PictureOfTheDayDatabaseDao
 }
 
-private lateinit var INSTANCE: AsteroidDatabase
-fun getDatabase(context: Context): AsteroidDatabase {
-    synchronized(AsteroidDatabase::class.java) {
+private lateinit var INSTANCE: AsteroidsDatabase
+fun getDatabase(context: Context): AsteroidsDatabase {
+    synchronized(AsteroidsDatabase::class.java) {
         if (!::INSTANCE.isInitialized) {
             INSTANCE =
                 Room.databaseBuilder(context.applicationContext,
-                    AsteroidDatabase::class.java,
+                    AsteroidsDatabase::class.java,
                     "asteroids")
                     .fallbackToDestructiveMigration()
                     .build()
