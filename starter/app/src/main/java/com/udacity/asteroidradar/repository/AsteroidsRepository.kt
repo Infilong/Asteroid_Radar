@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.PictureOfTheDay
-import com.udacity.asteroidradar.api.getSevenDayAsteroids
-import com.udacity.asteroidradar.api.getTodayAsteroid
+import com.udacity.asteroidradar.api.getToday
+import com.udacity.asteroidradar.api.getWeek
 import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
 import com.udacity.asteroidradar.database.AsteroidsDatabase
 import com.udacity.asteroidradar.database.asDatabaseModel
@@ -17,17 +17,28 @@ import org.json.JSONObject
 
 class AsteroidsRepository(private val database: AsteroidsDatabase) {
 
-    val asteroids: LiveData<List<Asteroid>> =
+    val asteroidsToday: LiveData<List<Asteroid>> =
+        Transformations.map(database.asteroidsDatabaseDao.getTodayAsteroids(getToday())) {
+            it?.asDomainModel()
+        }
+
+    val asteroidsWeek: LiveData<List<Asteroid>> =
+        Transformations.map(database.asteroidsDatabaseDao.getWeekAsteroids(getToday(), getWeek())) {
+            it?.asDomainModel()
+        }
+
+    val asteroidSaved: LiveData<List<Asteroid>> =
         Transformations.map(database.asteroidsDatabaseDao.getAsteroids()) {
             it?.asDomainModel()
         }
+
 
     suspend fun refreshAsteroids() {
         withContext(Dispatchers.IO) {
             try {
                 val asteroidList =
-                    AsteroidApi.retrofitServiceAsteroids.getAsteroids(getTodayAsteroid(),
-                        getSevenDayAsteroids())
+                    AsteroidApi.retrofitServiceAsteroids.getAsteroids(getToday(),
+                        getWeek())
                 val parsedAsteroidList = parseAsteroidsJsonResult(JSONObject(asteroidList))
                 database.asteroidsDatabaseDao.insertAll(*parsedAsteroidList.asDatabaseModel())
             } catch (e: Exception) {

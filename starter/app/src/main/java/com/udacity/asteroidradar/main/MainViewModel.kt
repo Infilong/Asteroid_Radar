@@ -1,10 +1,7 @@
 package com.udacity.asteroidradar.main
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.database.getDatabase
 import com.udacity.asteroidradar.repository.AsteroidsRepository
@@ -16,10 +13,15 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     private val asteroidsRepository = AsteroidsRepository(database)
     private val pictureOfTheDayRepository = PictureOfTheDayRepository(database)
 
-
     private val _navigateToDetailFragment = MutableLiveData<Asteroid?>()
     val navigateToDetailFragment: LiveData<Asteroid?>
         get() = _navigateToDetailFragment
+
+    private val _optionSelected = MutableLiveData<OptionSelected>()
+    val optionSelected: LiveData<OptionSelected>
+        get() = _optionSelected
+
+    var asteroidOptionList = asteroidsRepository.asteroidsToday
 
     fun onAsteroidClicked(asteroid: Asteroid) {
         _navigateToDetailFragment.value = asteroid
@@ -40,7 +42,19 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
-    val asteriodList = asteroidsRepository.asteroids
+    fun showOptionSelected(optionSelected: OptionSelected) {
+        asteroidsList =
+            Transformations.switchMap(_optionSelected) {
+                when (it!!) {
+                    OptionSelected.Today -> asteroidsRepository.asteroidsToday
+                    OptionSelected.Week -> asteroidsRepository.asteroidsWeek
+                    OptionSelected.Saved -> asteroidsRepository.asteroidSaved
+                }
+            }
+    }
+
+    var asteroidsList = asteroidsRepository.asteroidsToday
+
     val pictureOfTheDay = pictureOfTheDayRepository.pictureOfTheDay
 }
 

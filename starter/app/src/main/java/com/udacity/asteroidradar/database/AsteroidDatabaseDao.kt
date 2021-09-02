@@ -10,10 +10,10 @@ interface AsteroidDatabaseDao {
     fun getAsteroids(): LiveData<List<AsteroidEntity>>
 
     @Query("SELECT * FROM daily_asteroid_info_table WHERE closeApproachDate=:today")
-    fun getTodayAsteroids(today: Long): LiveData<List<AsteroidEntity>>
+    fun getTodayAsteroids(today: String): LiveData<List<AsteroidEntity>>
 
     @Query("SELECT * FROM daily_asteroid_info_table WHERE closeApproachDate BETWEEN :today AND :sevenDay ORDER BY closeApproachDate ASC")
-    fun getWeekAsteroids(today: Long, sevenDay: Long): LiveData<List<AsteroidEntity>>
+    fun getWeekAsteroids(today: String, sevenDay: String): LiveData<List<AsteroidEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(vararg asteroids: AsteroidEntity)

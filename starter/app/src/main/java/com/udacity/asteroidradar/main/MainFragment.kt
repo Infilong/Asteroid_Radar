@@ -3,11 +3,12 @@ package com.udacity.asteroidradar.main
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
+
+enum class OptionSelected { Today, Week, Saved }
 
 class MainFragment : Fragment() {
 
@@ -39,6 +40,17 @@ class MainFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.show_week_menu -> {
+                viewModel.showOptionSelected(OptionSelected.Week)
+            }
+            R.id.show_today_menu -> {
+                viewModel.showOptionSelected(OptionSelected.Today)
+            }
+            R.id.show_saved_menu -> {
+                viewModel.showOptionSelected(OptionSelected.Saved)
+            }
+        }
         return true
     }
 
@@ -47,8 +59,8 @@ class MainFragment : Fragment() {
             viewModel.onAsteroidClicked(asteroid)
         })
         binding.asteroidRecycler.adapter = adapter
-        viewModel.asteriodList.observe(viewLifecycleOwner, Observer {
-            if(null!=it){
+        viewModel.asteroidsList.observe(viewLifecycleOwner, {
+            if (null != it) {
                 (binding.asteroidRecycler.adapter as AsteroidInfoAdapter).submitList(it)
             }
         })
@@ -63,5 +75,7 @@ class MainFragment : Fragment() {
             }
         })
     }
+
+
 }
 

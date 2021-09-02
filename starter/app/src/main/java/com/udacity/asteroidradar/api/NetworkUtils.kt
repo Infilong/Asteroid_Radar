@@ -61,12 +61,12 @@ fun formatDate(date: Date): String {
     return dateFormat.format(date)
 }
 
-fun getTodayAsteroid(): String {
+fun getToday(): String {
     val calendar = Calendar.getInstance()
     return formatDate(calendar.time)
 }
 
-fun getSevenDayAsteroids(): String {
+fun getWeek(): String {
     val calendar = Calendar.getInstance()
     calendar.add(Calendar.DAY_OF_YEAR, 7)
     return formatDate(calendar.time)
