@@ -17,27 +17,32 @@ import kotlinx.coroutines.withContext
 import org.json.JSONObject
 
 class AsteroidsRepository(private val database: AsteroidsDatabase) {
-    val asteroids: LiveData<List<Asteroid>> =
-        Transformations.map(database.asteroidsDatabaseDao.getAsteroids()) {
-            it.asDomainModel()
-        }
+//    val asteroids: LiveData<List<Asteroid>> =
+//        Transformations.map(database.asteroidsDatabaseDao.getAsteroids()) {
+//            it.asDomainModel()
+//        }
 
     fun getAsteroidsSelected(filter: MainViewModel.MenuItemOptions): LiveData<List<Asteroid>> {
         return when (filter) {
+            MainViewModel.MenuItemOptions.Default ->
+                Transformations.map(database.asteroidsDatabaseDao.getAsteroids()) {
+                    it.asDomainModel()
+                }
+
             MainViewModel.MenuItemOptions.Today ->
                 Transformations.map(database.asteroidsDatabaseDao.getTodayAsteroids(getToday())) {
-                    it?.asDomainModel()
+                    it.asDomainModel()
                 }
 
             MainViewModel.MenuItemOptions.Week ->
                 Transformations.map(database.asteroidsDatabaseDao.getWeekAsteroids(getToday(),
                     getWeek())) {
-                    it?.asDomainModel()
+                    it.asDomainModel()
                 }
 
             MainViewModel.MenuItemOptions.Saved ->
                 Transformations.map(database.asteroidsDatabaseDao.getAsteroids()) {
-                    it?.asDomainModel()
+                    it.asDomainModel()
                 }
         }
     }

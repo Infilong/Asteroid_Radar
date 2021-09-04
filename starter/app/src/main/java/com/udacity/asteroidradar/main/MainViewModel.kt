@@ -9,8 +9,12 @@ import com.udacity.asteroidradar.repository.PictureOfTheDayRepository
 import kotlinx.coroutines.launch
 
 class MainViewModel(app: Application) : AndroidViewModel(app) {
-    enum class MenuItemOptions { Today, Week, Saved }
+    enum class MenuItemOptions { Default, Today, Week, Saved }
 
+    private val asteroidOption = MutableLiveData<MenuItemOptions>()
+    val asteroidList = Transformations.switchMap(asteroidOption) { menuOption ->
+        asteroidsRepository.getAsteroidsSelected(menuOption)
+    }
     private val database = getDatabase(app)
     private val asteroidsRepository = AsteroidsRepository(database)
     private val pictureOfTheDayRepository = PictureOfTheDayRepository(database)
@@ -19,19 +23,8 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     val navigateToDetailFragment: LiveData<Asteroid?>
         get() = _navigateToDetailFragment
 
-    private val _asteroidLiveList = MutableLiveData<List<Asteroid>>()
-    val asteroidLiveList: LiveData<List<Asteroid>>
-        get() = _asteroidLiveList
-
-    private var asteroidListLiveData: LiveData<List<Asteroid>> =
-        asteroidsRepository.getAsteroidsSelected(MenuItemOptions.Saved)
-
-    private val asteroidListObserver = Observer<List<Asteroid>> {
-        _asteroidLiveList.value = it
-    }
-
     init {
-        asteroidListLiveData.observeForever(asteroidListObserver)
+        asteroidOption.postValue(MenuItemOptions.Default)
         viewModelScope.launch {
             asteroidsRepository.refreshAsteroids()
             pictureOfTheDayRepository.refreshPictureOfTheDay()
@@ -39,8 +32,8 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     fun updateAsteroidOptionList(option: MenuItemOptions) {
-        val asteroidOptionList = asteroidsRepository.getAsteroidsSelected(option)
-        asteroidOptionList.observeForever(asteroidListObserver)
+//
+        asteroidOption.postValue(MenuItemOptions.Default)
     }
 
     fun onAsteroidClicked(asteroid: Asteroid) {
@@ -52,17 +45,16 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     init {
+        asteroidOption.postValue(MenuItemOptions.Default)
         viewModelScope.launch {
-            try {
-                asteroidsRepository.refreshAsteroids()
-                pictureOfTheDayRepository.refreshPictureOfTheDay()
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
+            asteroidsRepository.refreshAsteroids()
+            pictureOfTheDayRepository.refreshPictureOfTheDay()
+
         }
     }
 
-    val asteroidList = asteroidsRepository.asteroids
+
+    //val asteroidList = asteroidsRepository.asteroids
     val pictureOfTheDay = pictureOfTheDayRepository.pictureOfTheDay
 }
 
