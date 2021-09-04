@@ -8,8 +8,6 @@ import androidx.navigation.fragment.findNavController
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
 
-enum class OptionSelected { Today, Week, Saved }
-
 class MainFragment : Fragment() {
 
     private lateinit var binding: FragmentMainBinding
@@ -42,13 +40,13 @@ class MainFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.show_week_menu -> {
-                viewModel.showOptionSelected(OptionSelected.Week)
+                viewModel.updateAsteroidOptionList(MainViewModel.MenuItemOptions.Week)
             }
             R.id.show_today_menu -> {
-                viewModel.showOptionSelected(OptionSelected.Today)
+                viewModel.updateAsteroidOptionList(MainViewModel.MenuItemOptions.Today)
             }
             R.id.show_saved_menu -> {
-                viewModel.showOptionSelected(OptionSelected.Saved)
+                viewModel.updateAsteroidOptionList(MainViewModel.MenuItemOptions.Saved)
             }
         }
         return true
@@ -59,7 +57,7 @@ class MainFragment : Fragment() {
             viewModel.onAsteroidClicked(asteroid)
         })
         binding.asteroidRecycler.adapter = adapter
-        viewModel.asteroidsList.observe(viewLifecycleOwner, {
+        viewModel.asteroidList.observe(viewLifecycleOwner, {
             if (null != it) {
                 (binding.asteroidRecycler.adapter as AsteroidInfoAdapter).submitList(it)
             }
@@ -75,7 +73,5 @@ class MainFragment : Fragment() {
             }
         })
     }
-
-
 }
 

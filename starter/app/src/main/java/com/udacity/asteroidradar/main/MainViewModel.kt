@@ -9,6 +9,8 @@ import com.udacity.asteroidradar.repository.PictureOfTheDayRepository
 import kotlinx.coroutines.launch
 
 class MainViewModel(app: Application) : AndroidViewModel(app) {
+    enum class MenuItemOptions { Today, Week, Saved }
+
     private val database = getDatabase(app)
     private val asteroidsRepository = AsteroidsRepository(database)
     private val pictureOfTheDayRepository = PictureOfTheDayRepository(database)
@@ -17,11 +19,29 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     val navigateToDetailFragment: LiveData<Asteroid?>
         get() = _navigateToDetailFragment
 
-    private val _optionSelected = MutableLiveData<OptionSelected>()
-    val optionSelected: LiveData<OptionSelected>
-        get() = _optionSelected
+    private val _asteroidLiveList = MutableLiveData<List<Asteroid>>()
+    val asteroidLiveList: LiveData<List<Asteroid>>
+        get() = _asteroidLiveList
 
-    var asteroidOptionList = asteroidsRepository.asteroidsToday
+    private var asteroidListLiveData: LiveData<List<Asteroid>> =
+        asteroidsRepository.getAsteroidsSelected(MenuItemOptions.Saved)
+
+    private val asteroidListObserver = Observer<List<Asteroid>> {
+        _asteroidLiveList.value = it
+    }
+
+    init {
+        asteroidListLiveData.observeForever(asteroidListObserver)
+        viewModelScope.launch {
+            asteroidsRepository.refreshAsteroids()
+            pictureOfTheDayRepository.refreshPictureOfTheDay()
+        }
+    }
+
+    fun updateAsteroidOptionList(option: MenuItemOptions) {
+        val asteroidOptionList = asteroidsRepository.getAsteroidsSelected(option)
+        asteroidOptionList.observeForever(asteroidListObserver)
+    }
 
     fun onAsteroidClicked(asteroid: Asteroid) {
         _navigateToDetailFragment.value = asteroid
@@ -42,19 +62,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
-    fun showOptionSelected(optionSelected: OptionSelected) {
-        asteroidsList =
-            Transformations.switchMap(_optionSelected) {
-                when (it!!) {
-                    OptionSelected.Today -> asteroidsRepository.asteroidsToday
-                    OptionSelected.Week -> asteroidsRepository.asteroidsWeek
-                    OptionSelected.Saved -> asteroidsRepository.asteroidSaved
-                }
-            }
-    }
-
-    var asteroidsList = asteroidsRepository.asteroidsToday
-
+    val asteroidList = asteroidsRepository.asteroids
     val pictureOfTheDay = pictureOfTheDayRepository.pictureOfTheDay
 }
 

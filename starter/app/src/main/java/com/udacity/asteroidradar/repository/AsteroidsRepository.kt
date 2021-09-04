@@ -10,28 +10,37 @@ import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
 import com.udacity.asteroidradar.database.AsteroidsDatabase
 import com.udacity.asteroidradar.database.asDatabaseModel
 import com.udacity.asteroidradar.database.asDomainModel
+import com.udacity.asteroidradar.main.MainViewModel
 import com.udacity.asteroidradar.network.AsteroidApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
 
 class AsteroidsRepository(private val database: AsteroidsDatabase) {
-
-    val asteroidsToday: LiveData<List<Asteroid>> =
-        Transformations.map(database.asteroidsDatabaseDao.getTodayAsteroids(getToday())) {
-            it?.asDomainModel()
-        }
-
-    val asteroidsWeek: LiveData<List<Asteroid>> =
-        Transformations.map(database.asteroidsDatabaseDao.getWeekAsteroids(getToday(), getWeek())) {
-            it?.asDomainModel()
-        }
-
-    val asteroidSaved: LiveData<List<Asteroid>> =
+    val asteroids: LiveData<List<Asteroid>> =
         Transformations.map(database.asteroidsDatabaseDao.getAsteroids()) {
-            it?.asDomainModel()
+            it.asDomainModel()
         }
 
+    fun getAsteroidsSelected(filter: MainViewModel.MenuItemOptions): LiveData<List<Asteroid>> {
+        return when (filter) {
+            MainViewModel.MenuItemOptions.Today ->
+                Transformations.map(database.asteroidsDatabaseDao.getTodayAsteroids(getToday())) {
+                    it?.asDomainModel()
+                }
+
+            MainViewModel.MenuItemOptions.Week ->
+                Transformations.map(database.asteroidsDatabaseDao.getWeekAsteroids(getToday(),
+                    getWeek())) {
+                    it?.asDomainModel()
+                }
+
+            MainViewModel.MenuItemOptions.Saved ->
+                Transformations.map(database.asteroidsDatabaseDao.getAsteroids()) {
+                    it?.asDomainModel()
+                }
+        }
+    }
 
     suspend fun refreshAsteroids() {
         withContext(Dispatchers.IO) {
