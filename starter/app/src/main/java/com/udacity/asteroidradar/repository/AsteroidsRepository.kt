@@ -17,10 +17,6 @@ import kotlinx.coroutines.withContext
 import org.json.JSONObject
 
 class AsteroidsRepository(private val database: AsteroidsDatabase) {
-//    val asteroids: LiveData<List<Asteroid>> =
-//        Transformations.map(database.asteroidsDatabaseDao.getAsteroids()) {
-//            it.asDomainModel()
-//        }
 
     fun getAsteroidsSelected(filter: MainViewModel.MenuItemOptions): LiveData<List<Asteroid>> {
         return when (filter) {

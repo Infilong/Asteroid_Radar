@@ -32,8 +32,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     fun updateAsteroidOptionList(option: MenuItemOptions) {
-//
-        asteroidOption.postValue(MenuItemOptions.Default)
+        asteroidOption.postValue(option)
     }
 
     fun onAsteroidClicked(asteroid: Asteroid) {
@@ -53,8 +52,6 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
-
-    //val asteroidList = asteroidsRepository.asteroids
     val pictureOfTheDay = pictureOfTheDayRepository.pictureOfTheDay
 }
 
