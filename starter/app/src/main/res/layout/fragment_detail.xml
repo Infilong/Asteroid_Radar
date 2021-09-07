@@ -17,6 +17,7 @@
 
         <ImageView
             android:id="@+id/activity_main_image_of_the_day"
+            android:contentDescription="@string/hazardous_or_not"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
@@ -45,12 +46,14 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:contentDescription="@string/close_approach_date_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/close_approach_data_title"
+                        android:text="@string/close_approach_date_title"
                         android:textColor="@color/default_text_color" />
 
                     <TextView
+                        android:contentDescription="@string/close_approach_date"
                         android:id="@+id/close_approach_date"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -74,12 +77,14 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:contentDescription="@string/absolute_magnitude_title"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/absolute_magnitude_title"
                             android:textColor="@color/default_text_color" />
 
                         <TextView
+                            android:contentDescription="@string/absolute_magnitude"
                             android:id="@+id/absolute_magnitude"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -90,6 +95,7 @@
                     </LinearLayout>
 
                     <ImageView
+                        android:contentDescription="@string/astronomical_unit_explanation_button"
                         android:id="@+id/help_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -99,6 +105,7 @@
                 </LinearLayout>
 
                 <TextView
+                    android:contentDescription="@string/relative_velocity_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
@@ -106,6 +113,7 @@
                     android:textColor="@color/default_text_color" />
 
                 <TextView
+                    android:contentDescription="@string/km_unit_format"
                     android:id="@+id/estimated_diameter"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -115,6 +123,7 @@
                     tools:text="0.82 km" />
 
                 <TextView
+                    android:contentDescription="@string/relative_velocity_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
@@ -122,6 +131,7 @@
                     android:textColor="@color/default_text_color" />
 
                 <TextView
+                    android:contentDescription="@string/km_s_unit_format"
                     android:id="@+id/relative_velocity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -131,6 +141,7 @@
                     tools:text="11.9 km/s" />
 
                 <TextView
+                    android:contentDescription="@string/distance_from_earth_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
@@ -138,6 +149,7 @@
                     android:textColor="@color/default_text_color" />
 
                 <TextView
+                    android:contentDescription="@string/astronomical_unit_format"
                     android:id="@+id/distance_from_earth"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
