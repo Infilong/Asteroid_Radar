@@ -26,8 +26,13 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     init {
         asteroidOption.postValue(MenuItemOptions.Default)
         viewModelScope.launch {
-            asteroidsRepository.refreshAsteroids()
-            pictureOfTheDayRepository.refreshPictureOfTheDay()
+            try {
+                asteroidsRepository.refreshAsteroids()
+                pictureOfTheDayRepository.refreshPictureOfTheDay()
+            }catch (e:Exception){
+                e.printStackTrace()
+            }
+
         }
     }
 

@@ -3,8 +3,8 @@ package com.udacity.asteroidradar.network
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import com.udacity.asteroidradar.BuildConfig
 import com.udacity.asteroidradar.Constants
-import com.udacity.asteroidradar.Constants.API_KEY
 import com.udacity.asteroidradar.PictureOfTheDay
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -21,14 +21,14 @@ interface AsteroidApiService {
     suspend fun getAsteroids(
         @Query("start_date") startDate: String,
         @Query("end_date") endDate: String,
-        @Query("api_key") apiKey: String = API_KEY,
+        @Query("api_key") apiKey: String = BuildConfig.NASA_API_KEY,
     ): String
 }
 
 interface PictureOfTheDayApiService {
     @GET("planetary/apod")
     suspend fun getPictureOfTheDay(
-        @Query("api_key") apiKey: String = API_KEY,
+        @Query("api_key") apiKey: String = BuildConfig.NASA_API_KEY,
     ): PictureOfTheDay
 }
 

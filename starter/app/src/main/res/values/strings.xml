@@ -24,4 +24,6 @@
     <string name="hazardous_or_not">The Asteroid Is Hazardous Or Not</string>
     <string name="close_approach_date">Close Approach Date</string>
     <string name="absolute_magnitude">Absolute Magnitude</string>
+    <string name="potentially_hazardous">Potentially Hazardous Asteroid</string>
+    <string name="not_hazardous">Not Hazardous Asteroid</string>
 </resources>
